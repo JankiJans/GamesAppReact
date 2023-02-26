@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import GameForm from './components/GameForm/GameForm';
+import GamesList from './components/GamesList/GamesList';
+import { useState } from 'react';
+import shortid from 'shortid';
 
-function App() {
+const App = () => {
+
+  const [games, setGames] = useState([
+    { id: 1, title: 'The Witcher', category: 'RPG' },
+    { id: 2, title: 'Counter Strike', category: 'action' },
+  ]);
+
+  const removeGame = Gameid => { //funckcja usuwająca książkę z listy
+    setGames(games.filter(game => game.id !== Gameid)); //przypisujemy do stanu nową tablicę, która zawiera wszystkie książki z wyjątkiem tej, którą chcemy usunąć 
+  };
+
+  const addGame = newGame => { //funkcja dodająca książkę do listy
+    setGames([...games, { id: shortid(), title: newGame.title, category: newGame.category}]);
+  };
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Games App</h1>
+      <GamesList games={games} removeGame={removeGame} />
+      <GameForm addGame={addGame} />
     </div>
   );
 }
-
 export default App;
